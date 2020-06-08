@@ -39,8 +39,8 @@ class FeatureDictionary(object):
                 # map to a single index
                 self.feat_dict[col] = tc
                 tc += 1
-            else:
-                us = df[col].unique()
+            else:   #非数值型变量 --》离散的
+                us = df[col].unique()  #取出该列中的唯一值
                 self.feat_dict[col] = dict(zip(us, range(tc, len(us)+tc)))
                 tc += len(us)
         self.feat_dim = tc
@@ -54,7 +54,7 @@ class DataParser(object):
         assert not ((infile is None) and (df is None)), "infile or df at least one is set"
         assert not ((infile is not None) and (df is not None)), "only one can be set"
         if infile is None:
-            dfi = df.copy()
+            dfi = df.copy()  #原始数据
         else:
             dfi = pd.read_csv(infile)
         if has_label:
@@ -71,10 +71,10 @@ class DataParser(object):
                 dfi.drop(col, axis=1, inplace=True)
                 dfv.drop(col, axis=1, inplace=True)
                 continue
-            if col in self.feat_dict.numeric_cols:
-                dfi[col] = self.feat_dict.feat_dict[col]
+            if col in self.feat_dict.numeric_cols:  #这里是连续的 1.234453
+                dfi[col] = self.feat_dict.feat_dict[col] #值是编号
             else:
-                dfi[col] = dfi[col].map(self.feat_dict.feat_dict[col])
+                dfi[col] = dfi[col].map(self.feat_dict.feat_dict[col])  #dfi里有离散型变量的值 0,1,2  值是 真实离散值和编号
                 dfv[col] = 1.
 
         # list of list of feature indices of each sample in the dataset

@@ -9,9 +9,9 @@ from matplotlib import pyplot as plt
 from sklearn.metrics import make_scorer
 from sklearn.model_selection import StratifiedKFold
 
-import config
-from metrics import gini_norm
-from DataReader import FeatureDictionary, DataParser
+import example.config as config
+from example.metrics import gini_norm
+from example.DataReader import FeatureDictionary, DataParser
 sys.path.append("..")
 from DeepFM import DeepFM
 
@@ -118,6 +118,12 @@ def _plot_fig(train_results, valid_results, model_name):
 
 # load data
 dfTrain, dfTest, X_train, y_train, X_test, ids_test, cat_features_indices = _load_data()
+
+print(X_train)
+print(X_train.shape)
+print(y_train)
+print(y_train.shape)
+
 
 # folds
 folds = list(StratifiedKFold(n_splits=config.NUM_SPLITS, shuffle=True,
